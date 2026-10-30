@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MBOX Viewer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <button id="sidebarToggle" class="icon-button" type="button" aria-label="Apri menu">☰</button>
+    <div class="brand">MBOX Viewer</div>
+
+    <form id="searchForm" class="search-form">
+      <input id="searchInput" type="search" placeholder="Cerca: from:utente@example.com subject:fattura has:attachment">
+      <button type="submit">Cerca</button>
+    </form>
+
+    <select id="archiveSelect" aria-label="Archivio">
+      <option value="">Tutti gli archivi</option>
+    </select>
+
+    <button id="refreshButton" class="icon-button" type="button" title="Ricostruisci indice">⟳</button>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar" class="sidebar">
+      <nav>
+        <button class="nav-item active" data-nav="all" type="button">Tutti i messaggi</button>
+        <button class="nav-item" data-nav="attachments" type="button">Con allegati</button>
+      </nav>
+
+      <h2>Archivi</h2>
+      <div id="archiveList" class="archive-list"></div>
+
+      <div class="sidebar-note">
+        Sola lettura. Nessuna autenticazione: usare solo su rete locale fidata.
+      </div>
+    </aside>
+
+    <main class="content">
+      <section id="listPanel" class="list-panel">
+        <div class="list-header">
+          <div id="resultInfo" class="result-info">Caricamento…</div>
+          <select id="sortSelect" aria-label="Ordinamento">
+            <option value="date_desc">Data decrescente</option>
+            <option value="date_asc">Data crescente</option>
+            <option value="subject_asc">Oggetto A-Z</option>
+            <option value="subject_desc">Oggetto Z-A</option>
+            <option value="from_asc">Mittente A-Z</option>
+          </select>
+        </div>
+
+        <div id="messageList" class="message-list"></div>
+
+        <div class="pagination">
+          <button id="prevPage" type="button">‹ Precedente</button>
+          <span id="pageInfo"></span>
+          <button id="nextPage" type="button">Successiva ›</button>
+        </div>
+      </section>
+
+      <section id="messagePanel" class="message-panel">
+        <div id="messageEmpty" class="empty-state">
+          <h1>Seleziona un messaggio</h1>
+          <p>Apri una email dall’elenco per leggerne il contenuto.</p>
+        </div>
+
+        <article id="messageDetail" class="message-detail hidden">
+          <div class="message-toolbar">
+            <button id="backButton" class="back-button" type="button">← Elenco</button>
+            <div class="mode-toggle">
+              <button id="htmlMode" type="button" class="active">HTML</button>
+              <button id="textMode" type="button">Testo</button>
+            </div>
+            <label class="remote-toggle">
+              <input id="remoteImages" type="checkbox">
+              Immagini remote
+            </label>
+          </div>
+
+          <h1 id="msgSubject" class="msg-subject"></h1>
+
+          <div id="msgMeta" class="msg-meta"></div>
+
+          <div id="msgBodyText" class="msg-body-text hidden"></div>
+          <iframe
+            id="msgBodyHtml"
+            class="msg-body-html"
+            sandbox=""
+            referrerpolicy="no-referrer"
+            title="Contenuto email"
+          ></iframe>
+
+          <div id="attachmentsSection" class="attachments-section hidden">
+            <h2>Allegati</h2>
+            <div id="attachmentsList" class="attachments-list"></div>
+          </div>
+
+          <details class="headers-details">
+            <summary>Intestazioni tecniche</summary>
+            <pre id="msgHeaders"></pre>
+          </details>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
