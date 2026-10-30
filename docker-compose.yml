@@ -1,0 +1,14 @@
+services:
+  mbox-viewer:
+    build: .
+    container_name: mbox-gmail-viewer
+    ports:
+      - "${HOST_PORT:-8081}:8080"
+    environment:
+      ARCHIVES_DIR: /data/archivi
+      DATA_DIR: /data/app
+      DATABASE_PATH: /data/app/index.sqlite3
+    volumes:
+      - ./archivi:/data/archivi:ro
+      - ./data:/data/app
+    restart: unless-stopped
